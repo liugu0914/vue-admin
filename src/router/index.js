@@ -5,12 +5,7 @@
  */
 import Router from 'vue-router'
 import Vue from 'vue'
-import path from 'path'
 
-/**
- * 获取组件页面路径
- */
-const view = path.join(__dirname, '../view')
 
 Vue.use(Router)
 
@@ -18,11 +13,11 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component : () => import(`${view}/login/login.vue`)
+    component: () => import(`@/views/login/login.vue`)
   }
 ]
 
 export default new Router({
-  mode : 'history',
+  mode: 'history',
   routes
 })
