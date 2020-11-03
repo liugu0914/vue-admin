@@ -12,7 +12,7 @@
               <v-card-title class="login-title">
                 欢迎来到Jiopeel，请登录！
               </v-card-title>
-              <v-form v-model="valid">
+              <v-form>
                 <v-container class="px-6 py-4 ">
                   <v-row>
                     <v-col
@@ -67,7 +67,7 @@
                       class="pb-4"
                       cols="12"
                     >
-                      <v-btn tabindex="3" block x-large color="var(--color-primary)" class="login-btn">
+                      <v-btn tabindex="3" block x-large color="var(--color-primary)" class="login-btn" @click="login">
                         登录
                       </v-btn>
                     </v-col>
@@ -121,9 +121,25 @@
               </v-form>
             </v-card>
           </v-col>
-          <!-- <v-col cols="12">
-            <v-card class="login-main-monitor" />
-          </v-col> -->
+          <v-snackbar
+            v-model="active"
+            timeout="3000"
+            top
+            app
+          >
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="pink"
+                text
+                v-bind="attrs"
+                @click="active = false"
+              >
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
         </v-row>
       </v-container>
     </v-main>
@@ -132,7 +148,11 @@
 <script>
 export default {
   data: () => ({
-    see: false
+    see: false,
+    account: '',
+    password: '',
+    active: false,
+    text: ''
   }),
   created: () => {
     console.log('login')
@@ -140,6 +160,14 @@ export default {
   methods: {
     isSee() {
       this.see = !this.see
+      this.showToast(this.see ? '密码可见' : '密码不可见')
+    },
+    showToast(text) {
+      this.text = text
+      this.active = true
+    },
+    login() {
+      this.$toast('Default toast')
     }
   }
 }
@@ -258,5 +286,10 @@ export default {
     width: 30px;
     height: 30px;
   }
+}
+.toast-content{
+    word-wrap:break-word;
+    max-width: 320px;
+    min-width: 200px;
 }
 </style>
