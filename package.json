@@ -12,8 +12,7 @@
     "lockr": "^0.8.5",
     "vue": "^2.6.11",
     "vue-router": "^3.4.8",
-    "vuetify": "^2.3.16",
-    "vuetify-toast-snackbar-ng": "^0.7.3"
+    "vuetify": "^2.3.16"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

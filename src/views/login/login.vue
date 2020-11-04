@@ -167,7 +167,7 @@ export default {
       this.active = true
     },
     login() {
-      this.$toast('Default toast')
+      this.$toast.suc('Default toast')
     }
   }
 }

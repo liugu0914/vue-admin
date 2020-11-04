@@ -1,62 +1,198 @@
 <template>
   <v-snackbar
     v-model="active"
-    content-class="toast-content"
     :timeout="timeout"
-    app
-    top
+    :color="color"
+    :bottom="y === 'bottom'"
+    :top="y === 'top'"
+    :left="x === 'left'"
+    :right="x === 'right'"
+    :multi-line="multiLine"
+    :vertical="vertical"
+    class="v-application vts"
+    :class="classes"
+    role="alert"
+    @click="dismiss"
   >
-    <div class="d-flex">
-      <span class="mr-2">📚</span>
-      <span>{{ text }}</span>
+    <div class="vts__message" :class="{ 'vts__message--padded': showClose && !closeText }">
+      <v-icon
+        v-if="!!icon"
+        dark
+        left
+        class="vts__icon"
+        :color="iconColor"
+      >
+        {{ icon }}
+      </v-icon>
+      <span v-html="message" />
+      <slot />
     </div>
+
     <template v-slot:action="{ attrs }">
       <v-btn
-        color="pink"
-        text
+        v-if="showClose"
+        :icon="!closeText"
+        :text="!!closeText"
+        :class="{ 'vts__close--icon': !closeText }"
+        :color="closeColor"
         v-bind="attrs"
-        @click="active = false"
+        @click="close"
       >
-        Close
+        <v-icon v-if="!closeText">
+          {{ closeIcon }}
+        </v-icon>
+        <span v-if="!!closeText">{{ closeText }}</span>
       </v-btn>
     </template>
   </v-snackbar>
 </template>
+
 <script>
 export default {
-  data() {
-    return {
-      active: false,
-      text: '',
-      icon: '',
-      color: 'dark',
-      timeout: 3000,
-      close: true,
-      application: {}
+  props: {
+    x: {
+      type: String,
+      default: 'right'
+    },
+    y: {
+      type: String,
+      default: 'bottom'
+    },
+    color: {
+      type: String,
+      default: 'info'
+    },
+    icon: {
+      type: String,
+      default: ''
+    },
+    iconColor: {
+      type: String,
+      default: ''
+    },
+    classes: {
+      type: [String, Object, Array],
+      default: ''
+    },
+    message: {
+      type: String,
+      default: ''
+    },
+    timeout: {
+      type: Number,
+      default: 3000
+    },
+    dismissable: {
+      type: Boolean,
+      default: true
+    },
+    multiLine: {
+      type: Boolean,
+      default: false
+    },
+    vertical: {
+      type: Boolean,
+      default: false
+    },
+    showClose: {
+      type: Boolean,
+      default: false
+    },
+    closeText: {
+      type: String,
+      default: ''
+    },
+    closeIcon: {
+      type: String,
+      default: 'close'
+    },
+    closeColor: {
+      type: String,
+      default: ''
     }
   },
+
+  data: () => ({
+    active: false
+  }),
+
+  watch: {
+    active: function(isActive, wasActive) {
+      this.$emit('statusChange', isActive, wasActive)
+    }
+  },
+
+  mounted() {
+    this.$nextTick(() => this.show())
+  },
+
   methods: {
-    show(options = {}) {
-      if (this.active) {
-        this.reomve()
-        this.$nextTick(() => this.show(options))
-        return
-      }
-      Object.keys(options).forEach(field => (this[field] = options[field]))
+    show() {
       this.active = true
-      console.log(JSON.stringify(this.$data))
-      console.log('snackbar snackbar snackbar')
     },
-    reomve() {
+
+    close() {
       this.active = false
+    },
+
+    dismiss() {
+      if (this.dismissable) {
+        this.close()
+      }
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-.toast-content{
-    word-wrap:break-word;
-    max-width: 320px;
-    min-width: 200px;
-}
+
+<style>
+  .vts {
+    max-width: none !important;
+    width: auto !important;
+  }
+
+  .vts .v-snack__content {
+    justify-content: flex-start;
+  }
+
+  .vts__icon {
+    margin-right: 12px;
+  }
+
+  .vts__message {
+    margin-right: auto;
+  }
+
+  .vts__close {
+    margin: 0 -8px 0 24px !important;
+    justify-self: flex-end;
+  }
+
+  .vts.v-snack--vertical .vts__icon {
+    margin: 0 0 12px !important;
+  }
+
+  .vts.v-snack--vertical .v-snack__content {
+    padding-bottom: 16px !important;
+  }
+
+  .vts.v-snack--vertical .vts__message--padded {
+    padding: 12px 0 0;
+  }
+
+  .vts.v-snack--vertical .vts__icon + .vts__message {
+    padding-top: 0;
+  }
+
+  .vts.v-snack--vertical .vts__close {
+    margin: 12px 0 -8px !important;
+  }
+
+  .vts.v-snack--vertical .vts__close--icon {
+    margin: 0 !important;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    transform: scale(0.75);
+    padding: 4px !important;
+  }
 </style>
