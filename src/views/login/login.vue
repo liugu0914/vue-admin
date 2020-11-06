@@ -10,23 +10,23 @@
           <v-col cols="12">
             <v-card class="login-main">
               <v-card-title class="login-title">
-                欢迎来到Jiopeel，请登录！
+                {{ isRegister?'注册账号':'欢迎来到Jiopeel，请登录！' }}
               </v-card-title>
               <v-form>
-                <v-container class="px-6 py-4 ">
+                <v-container v-if="!isRegister" class="px-6 py-4">
                   <v-row>
                     <v-col
                       cols="12"
                     >
                       <v-text-field
-                        v-model="account"
+                        v-model="loginData.account"
                         autocomplete="off"
                         tabindex="1"
                         label="账号"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
-                        filled
+                        outlined
                       >
                         <template slot="prepend-inner">
                           <i class="cs cs-user" />
@@ -38,7 +38,7 @@
                       cols="12"
                     >
                       <v-text-field
-                        v-model="password"
+                        v-model="loginData.password"
                         autocomplete="off"
                         tabindex="2"
                         :type="see?'text':'password'"
@@ -46,7 +46,7 @@
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
-                        filled
+                        outlined
                       >
                         <template slot="prepend-inner">
                           <i class="cs cs-password" />
@@ -54,30 +54,28 @@
                         <template slot="append">
                           <v-tooltip bottom color="#000">
                             <template v-slot:activator="{ on, attrs }">
-                              <a class="py-2" v-bind="attrs" v-on="on" @click="isSee">
-                                <i :class="see?'cs-see':'cs-nosee'" class="cs" />
-                              </a>
+                              <i v-bind="attrs" :class="see?'cs-see':'cs-nosee'" class="cs is-see" v-on="on" @click="isSee" />
                             </template>
                             <span>{{ see?'密码可见':'密码不可见' }}</span>
                           </v-tooltip>
                         </template>
                       </v-text-field>
                     </v-col>
+                  </v-row>
+                  <v-row>
                     <v-col
                       class="pb-4"
                       cols="12"
                     >
-                      <v-btn tabindex="3" block x-large color="var(--color-primary)" class="login-btn" @click="login">
+                      <v-btn :loading="loading" :disabled="disabled" tabindex="3" block x-large color="var(--color-primary)" class="login-btn" @click="login">
                         登录
                       </v-btn>
                     </v-col>
-                  </v-row>
-                  <v-row>
                     <v-card-actions style="width:100%">
                       <v-col
-                        cols="6" class="text-left"
+                        cols="6" class="text-left login-font"
                       >
-                        <a class="a">注册账号</a>
+                        <a class="a" @click.prevent="isRegister = true">注册账号</a>
                       </v-col>
                       <v-col
                         cols="6" class="text-right"
@@ -86,7 +84,7 @@
                       </v-col>
                     </v-card-actions>
                   </v-row>
-                  <div class="login-type text-center">
+                  <div class="login-font text-center">
                     第三方登录
                   </div>
                   <v-row>
@@ -118,28 +116,90 @@
                     </v-card-actions>
                   </v-row>
                 </v-container>
+                <v-container v-else class="px-6 py-4 ">
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        v-model="registerData.account"
+                        autocomplete="off"
+                        tabindex="1"
+                        label="账号"
+                        background-color="var(--color-grey)"
+                        color="var(--color-semidark)"
+                        required
+                        outlined
+                      >
+                        <template slot="prepend-inner">
+                          <i class="cs cs-user" />
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        v-model="registerData.email"
+                        autocomplete="off"
+                        tabindex="2"
+                        label="邮箱"
+                        background-color="var(--color-grey)"
+                        color="var(--color-semidark)"
+                        required
+                        outlined
+                      >
+                        <template slot="prepend-inner">
+                          <i class="cs cs-email" />
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        v-model="registerData.password"
+                        autocomplete="off"
+                        tabindex="3"
+                        :type="see?'text':'password'"
+                        label="密码"
+                        background-color="var(--color-grey)"
+                        color="var(--color-semidark)"
+                        required
+                        outlined
+                      >
+                        <template slot="prepend-inner">
+                          <i class="cs cs-password" />
+                        </template>
+                        <template slot="append">
+                          <v-tooltip bottom color="#000">
+                            <template v-slot:activator="{ on, attrs }">
+                              <i v-bind="attrs" :class="see?'cs-see':'cs-nosee'" class="cs is-see" v-on="on" @click="isSee" />
+                            </template>
+                            <span>{{ see?'密码可见':'密码不可见' }}</span>
+                          </v-tooltip>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col
+                      class="pb-4"
+                      cols="12"
+                    >
+                      <v-btn tabindex="4" block x-large color="var(--color-primary)" class="login-btn" @click="register">
+                        注册
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <div class="login-font text-center pt-2 pb-4">
+                    已有账号?点击 <a class="a" @click.prevent="isRegister=false">登陆</a>
+                  </div>
+                </v-container>
               </v-form>
             </v-card>
           </v-col>
-          <v-snackbar
-            v-model="active"
-            timeout="3000"
-            top
-            app
-          >
-            {{ text }}
-
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="pink"
-                text
-                v-bind="attrs"
-                @click="active = false"
-              >
-                Close
-              </v-btn>
-            </template>
-          </v-snackbar>
         </v-row>
       </v-container>
     </v-main>
@@ -149,29 +209,39 @@
 export default {
   data: () => ({
     see: false,
-    account: '',
-    password: '',
-    active: false,
-    text: ''
+    isRegister: false,
+    loading: false,
+    disabled: false,
+    loginData: {
+      account: '',
+      password: ''
+    },
+    registerData: {
+      account: '',
+      password: '',
+      email: ''
+    }
   }),
+  watch: {
+  },
   created: () => {
     console.log('login')
   },
   methods: {
     isSee() {
       this.see = !this.see
-      this.showToast(this.see ? '密码可见' : '密码不可见')
-    },
-    showToast(text) {
-      this.text = text
-      this.active = true
     },
     login() {
+      this.loading = true
+      this.disabled = true
+      this.$toast.suc('Default toast')
+    },
+    register() {
       this.$toast.suc('Default toast')
     }
   }
 }
 </script>
 <style lang="scss">
- @import "@/style/login/login.scss";
+ @import "@/scss/login/login.scss";
 </style>

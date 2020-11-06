@@ -17,19 +17,19 @@ const Default = {
   x: 'center', // default
   y: 'top', // default
   color: 'dark', // default
-  icon: 'dark',
+  icon: 'mdi-information',
   iconColor: '', // default
   classes: [
     'body-2'
   ],
-  timeout: 3000, // default
+  timeout: -1, // default
   dismissable: true, // default
   multiLine: false, // default
   vertical: false, // default
   queueable: false, // default
-  showClose: false, // default
+  showClose: true, // default
   closeText: '', // default
-  closeIcon: 'close', // default
+  closeIcon: 'mdi-close', // default
   closeColor: '', // default
   slot: [], // default
   shorts: {

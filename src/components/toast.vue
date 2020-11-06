@@ -1,6 +1,7 @@
 <template>
   <v-snackbar
     v-model="active"
+    transition="scroll-y-transition"
     :timeout="timeout"
     :color="color"
     :bottom="y === 'bottom'"
@@ -14,7 +15,7 @@
     role="alert"
     @click="dismiss"
   >
-    <div class="vts__message" :class="{ 'vts__message--padded': showClose && !closeText }">
+    <div class="vts__message d-flex" :class="{ 'vts__message--padded': showClose && !closeText }">
       <v-icon
         v-if="!!icon"
         dark
@@ -194,5 +195,8 @@ export default {
     top: 4px;
     transform: scale(0.75);
     padding: 4px !important;
+  }
+  .vts .v-snack__wrapper{
+    min-width :300px!important
   }
 </style>

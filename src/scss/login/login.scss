@@ -36,7 +36,7 @@
   //   z-index: 1;
   // }
   .v-main {
-    background-color: #fafbfe;
+    background-color: #f2f5f8;
     color: var(--color-semidark);
     font-size: 14px;
     display: flex;
@@ -68,6 +68,10 @@
     color: #fff;
     box-shadow: 0 2px 7px var(--color-semidark);
     font-weight: 700;
+    .v-btn__loader{
+      background-color: #006fc9a0!important ;
+      color: #fff!important ;
+   }
   }
   .text-center {
     text-align: center;
@@ -86,7 +90,8 @@
     padding-bottom: 2px;
     font-weight: 700;
   }
-  .login-type {
+  .login-font {
+    font-weight: 700;
     color: var(--color-semidark);
   }
   .login-logo {
@@ -106,7 +111,7 @@
     color: var(--color-semidark);
   }
   .is-see {
-    font-size: 10px;
+    font-size: 25px;
   }
   .cs-svg {
     width: 30px;
@@ -117,4 +122,8 @@
   word-wrap: break-word;
   max-width: 320px;
   min-width: 200px;
+}
+
+.v-text-field--outlined fieldset{
+  border: var(--color-grey) 1px solid;
 }
