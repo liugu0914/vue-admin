@@ -1,14 +1,21 @@
 import App from './App.vue'
+import Lockr from 'lockr'
 import Vue from 'vue'
 import router from './router/index.js' // 路由器
 import vuetify from './plugins/vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import './permission' // permission control
+import Tool from './utils/tool'
 
 
 Vue.config.productionTip = false
+// 工具类
+Vue.prototype.$tool = Tool
+// 本地存储
+Vue.prototype.$lockr = Lockr
 
 
+console.log('api ：' + process.env.VUE_APP_BASE_API)
 console.log('app start')
 
 /**

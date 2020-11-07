@@ -22,7 +22,7 @@ const Default = {
   classes: [
     'body-2'
   ],
-  timeout: -1, // default
+  timeout: 3000, // default
   dismissable: true, // default
   multiLine: false, // default
   vertical: false, // default

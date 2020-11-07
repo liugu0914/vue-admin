@@ -1,20 +1,22 @@
 import router from './router/index.js'
 import Lockr from 'lockr'
+import Utils from './utils/utils'
 
 // 不重定向白名单
-const whiteList = ['/login', '/welcome']
+const whiteList = ['/login', '/main']
 router.beforeEach((to, from, next) => {
-  // if (to.meta.disabled) {
-  //   next(false)
-  //   return
-  // }
+  console.log('to : ')
+  console.log(to)
+  console.log('from : ')
+  console.log(from)
+  if (!to.matched.some(record => record.meta.requiresAuth || true)) {
+    return next()
+  }
   /** 全局路由触发这个方法  如果有缓存暂时在这里交与 */
-  console.log('to : ' + JSON.stringify(to))
-  console.log('from : ' + JSON.stringify(from))
-  const token = Lockr.get('token')
-  console.log('token : ' + token)
+  const token = Lockr.get('access_token')
+  console.log('access_token : ' + token)
   if (!token) {
-    if (whiteList.includes(to.path)) {
+    if (Utils.contains(whiteList, to.path)) {
       return next()
     }
     return next('/login')

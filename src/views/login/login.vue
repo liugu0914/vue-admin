@@ -1,5 +1,5 @@
 <template>
-  <v-app class="login-app">
+  <v-app id class="login-app">
     <v-main>
       <v-container class="login-container">
         <v-row>
@@ -12,7 +12,7 @@
               <v-card-title class="login-title">
                 {{ isRegister?'注册账号':'欢迎来到Jiopeel，请登录！' }}
               </v-card-title>
-              <v-form>
+              <v-form ref="form" v-model="valid">
                 <v-container v-if="!isRegister" class="px-6 py-4">
                   <v-row>
                     <v-col
@@ -23,6 +23,7 @@
                         autocomplete="off"
                         tabindex="1"
                         label="账号"
+                        :rules="[ v => !!v || '账号不能为空']"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
@@ -43,6 +44,7 @@
                         tabindex="2"
                         :type="see?'text':'password'"
                         label="密码"
+                        :rules="[ v => !!v || '密码不能为空']"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
@@ -92,7 +94,7 @@
                       <v-col cols="6" class="text-center">
                         <v-tooltip bottom color="#000">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" large icon v-on="on">
+                            <v-btn v-bind="attrs" large icon @click="OauthLogin('github')" v-on="on">
                               <svg class="cs-svg" aria-hidden="true">
                                 <use xlink:href="#cs-github" />
                               </svg>
@@ -104,7 +106,7 @@
                       <v-col cols="6" class="text-center">
                         <v-tooltip bottom color="#000">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" large icon v-on="on">
+                            <v-btn v-bind="attrs" large icon @click="OauthLogin('gitee')" v-on="on">
                               <svg class="cs-svg" aria-hidden="true">
                                 <use xlink:href="#cs-gitee" />
                               </svg>
@@ -126,6 +128,7 @@
                         autocomplete="off"
                         tabindex="1"
                         label="账号"
+                        :rules="[ v => !!v || '账号不能为空']"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
@@ -145,6 +148,8 @@
                         autocomplete="off"
                         tabindex="2"
                         label="邮箱"
+                        :rules="[ v => !!v || '邮箱不能为空',
+                                  v => $tool.chkEmail(v) || '邮箱格式不正确']"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
@@ -164,6 +169,7 @@
                         tabindex="3"
                         :type="see?'text':'password'"
                         label="密码"
+                        :rules="[ v => !!v || '密码不能为空']"
                         background-color="var(--color-grey)"
                         color="var(--color-semidark)"
                         required
@@ -188,7 +194,7 @@
                       class="pb-4"
                       cols="12"
                     >
-                      <v-btn tabindex="4" block x-large color="var(--color-primary)" class="login-btn" @click="register">
+                      <v-btn :loading="loading" :disabled="disabled" tabindex="4" block x-large color="var(--color-primary)" class="login-btn" @click="register">
                         注册
                       </v-btn>
                     </v-col>
@@ -206,8 +212,11 @@
   </v-app>
 </template>
 <script>
+import Oauth from '@/api/login/oauth'
+
 export default {
   data: () => ({
+    valid: true,
     see: false,
     isRegister: false,
     loading: false,
@@ -223,6 +232,15 @@ export default {
     }
   }),
   watch: {
+    // loginData: {
+    //   handler: function(val, oldval) {
+    //     console.log('watch :' + JSON.stringify(this.loginData))
+    //   },
+    //   deep: true// 对象内部的属性监听，也叫深度监听
+    // }
+    isRegister(val, oldval) {
+      return this.$refs.form.reset()
+    }
   },
   created: () => {
     console.log('login')
@@ -231,13 +249,74 @@ export default {
     isSee() {
       this.see = !this.see
     },
+    check() {
+      return this.$refs.form.validate()
+    },
+    /**
+     * 登录
+     */
     login() {
+      if (!this.check()) {
+        return
+      }
       this.loading = true
       this.disabled = true
-      this.$toast.suc('Default toast')
+      // 开始登录操作
+      let grantType = ''
+      Oauth.getAuthUrl().then(res => {
+        const auth = res.data
+        console.log(auth)
+        console.log('login :' + JSON.stringify(this.loginData))
+        grantType = auth.grantType || 'local'
+        return Oauth.login(this.loginData, auth)
+      }).then(res => {
+        console.log(res.data)
+        return Oauth.authRedirect(grantType, res.data.code)
+      }).then(res => {
+        console.log('认证成功：' + JSON.stringify(res))
+        const access_token = res.data.access_token
+        console.log('access_token==> ' + JSON.stringify(access_token))
+        this.$lockr.set('access_token', access_token)
+        this.$toast.suc('登录成功')
+      }).done().finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.disabled = false
+        }, 800)
+      })
     },
+    /**
+     * 注册
+     */
     register() {
-      this.$toast.suc('Default toast')
+      if (!this.check()) {
+        return
+      }
+      this.loading = true
+      this.disabled = true
+      const account = this.registerData.account
+      Oauth.register(this.registerData).then(res => {
+        this.$toast.suc('注册成功')
+        this.isRegister = false
+        this.$nextTick(() => {
+          this.loginData.account = account
+        })
+      }).done().finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.disabled = false
+        }, 800)
+      })
+    },
+    /**
+     * 授权登录
+     */
+    OauthLogin(grantType) {
+      Oauth.getAuthUrl(grantType).then(res => {
+        const auth = res.data
+        console.log(auth)
+        window.location.href = auth.url
+      })
     }
   }
 }

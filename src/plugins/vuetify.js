@@ -19,13 +19,13 @@ const vueObj = new Vuetify({
     dark: false,
     themes: {
       light: {
-        primary: '#1976D2',
-        secondary: '#424242',
+        primary: '#006dc9',
+        secondary: '#6c757d',
         accent: '#82B1FF',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107'
+        error: '#fa5c7c',
+        info: '#39afd1',
+        success: '#0acf97',
+        warning: '#ffbc00'
       },
       dark: {
       }
