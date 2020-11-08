@@ -1,69 +1,70 @@
-import request, { ContentType } from '@/utils/request.js'
+import request from '@/api/request.js'
 
 /**
  *  用户授权接口
  * @author lyc
  * @date 2020-11-6
  */
-const Interface = {
+class Oauth {
   /**
    * 获取授权地址
    */
-  getAuthUrl: async(grantType) => {
+  static async getAuthUrl(grantType) {
     return await request({
       url: '/oauth',
       method: 'get',
-      params: { grantType: grantType }
+      params: { grantType }
     })
-  },
+  }
   /**
    * 后端认证
    */
-  authRedirect: async(grantType, code) => {
+  static async authRedirect(grantType, code) {
     return await request({
       url: `/oauth/redirect/${grantType}`,
       method: 'get',
       params: { code }
     })
-  },
+  }
   /**
    * 登录
    */
-  login: async(data, params) => {
-    params = { ...data, ...params }
+  static async login(data) {
     return await request({
       url: '/login',
       method: 'post',
-      data,
-      params,
-      headers: {
-        'Content-Type': ContentType.FORM
-      }
+      data
     })
-  },
+  }
   /**
    * 注册
    */
-  register: async(params) => {
+  static async register(data) {
     return await request({
       url: '/register',
       method: 'POST',
-      params,
-      headers: {
-        'Content-Type': ContentType.FORM
-      }
+      data
     })
-  },
+  }
+  /**
+   * 重置密码
+   */
+  static async resetPassword(data) {
+    return await request({
+      url: '/resetPassword',
+      method: 'POST',
+      data
+    })
+  }
   /**
    * 退出
    */
-  logout: async(params) => {
+  static async logout() {
     return await request({
       url: '/logout',
-      method: 'get',
-      data: params
+      method: 'get'
     })
   }
 }
 
-export default Interface
+export default Oauth

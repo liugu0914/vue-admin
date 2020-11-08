@@ -17,7 +17,7 @@ const common = [
   {
     path: '/main',
     name: 'main',
-    component: () => import('@/views/login/login.vue')
+    component: () => import('@/views/app/main.vue')
   },
   {
     path: '/login',

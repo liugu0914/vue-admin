@@ -26,7 +26,10 @@ export default {
       const access_token = res.data.access_token
       console.log('access_token==> ' + JSON.stringify(access_token))
       this.$lockr.set('access_token', access_token)
-      this.message = '授权认证成功'
+      this.message = '授权认证成功,正在跳转...'
+      setTimeout(() => {
+        this.$router.push({ name: 'main' })
+      }, 800)
     }).catch(res => {
       this.message = '授权认证失败,正在返回登录界面...'
       setTimeout(() => {

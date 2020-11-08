@@ -8,11 +8,14 @@
 class Utils {
   /**
      * 数组中是否包含item
-     * @param {Array<String>} arr
+     * @param {*} arr
      * @param {String} item
      */
   static contains(arr, item) {
-    return !!item && arr.some(value => item.startsWith(value))
+    return !!item && (
+      (arr instanceof Array && arr.some(value => item.startsWith(value))) ||
+      (typeof arr === 'string' && item.startsWith(arr))
+    )
   }
 }
 

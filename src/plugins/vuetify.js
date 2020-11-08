@@ -1,15 +1,6 @@
 import Vue from 'vue'
-import Vuetify, { VSnackbar, VIcon } from 'vuetify/lib'
-// import VuetifyToast from 'vuetify-toast-snackbar-ng'
-// import Toast from './toastIndex'
+import Vuetify from 'vuetify/lib/framework'
 import Toast from './toast'
-
-Vue.use(Vuetify, {
-  components: {
-    VSnackbar,
-    VIcon
-  }
-})
 
 /**
  * Vuetify 定义

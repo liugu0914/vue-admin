@@ -10,10 +10,10 @@
           <v-col cols="12">
             <v-card class="login-main">
               <v-card-title class="login-title">
-                {{ isRegister?'注册账号':'欢迎来到Jiopeel，请登录！' }}
+                {{ title }}
               </v-card-title>
               <v-form ref="form" v-model="valid">
-                <v-container v-if="!isRegister" class="px-6 py-4">
+                <v-container v-if="activeType === ACTIVE_TYPE.Login" class="px-6 py-4">
                   <v-row>
                     <v-col
                       cols="12"
@@ -24,8 +24,8 @@
                         tabindex="1"
                         label="账号"
                         :rules="[ v => !!v || '账号不能为空']"
-                        background-color="var(--color-grey)"
-                        color="var(--color-semidark)"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
                         required
                         outlined
                       >
@@ -45,8 +45,8 @@
                         :type="see?'text':'password'"
                         label="密码"
                         :rules="[ v => !!v || '密码不能为空']"
-                        background-color="var(--color-grey)"
-                        color="var(--color-semidark)"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
                         required
                         outlined
                       >
@@ -69,7 +69,7 @@
                       class="pb-4"
                       cols="12"
                     >
-                      <v-btn :loading="loading" :disabled="disabled" tabindex="3" block x-large color="var(--color-primary)" class="login-btn" @click="login">
+                      <v-btn :loading="loading" :disabled="disabled" tabindex="3" block x-large class="login-btn" @click="login">
                         登录
                       </v-btn>
                     </v-col>
@@ -77,12 +77,12 @@
                       <v-col
                         cols="6" class="text-left login-font"
                       >
-                        <a class="a" @click.prevent="isRegister = true">注册账号</a>
+                        <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Register">注册账号</a>
                       </v-col>
                       <v-col
                         cols="6" class="text-right"
                       >
-                        <a class="a">忘记密码</a>
+                        <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Forget">忘记密码</a>
                       </v-col>
                     </v-card-actions>
                   </v-row>
@@ -118,7 +118,7 @@
                     </v-card-actions>
                   </v-row>
                 </v-container>
-                <v-container v-else class="px-6 py-4 ">
+                <v-container v-if="activeType === ACTIVE_TYPE.Register" class="px-6 py-4 ">
                   <v-row>
                     <v-col
                       cols="12"
@@ -129,8 +129,8 @@
                         tabindex="1"
                         label="账号"
                         :rules="[ v => !!v || '账号不能为空']"
-                        background-color="var(--color-grey)"
-                        color="var(--color-semidark)"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
                         required
                         outlined
                       >
@@ -150,8 +150,8 @@
                         label="邮箱"
                         :rules="[ v => !!v || '邮箱不能为空',
                                   v => $tool.chkEmail(v) || '邮箱格式不正确']"
-                        background-color="var(--color-grey)"
-                        color="var(--color-semidark)"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
                         required
                         outlined
                       >
@@ -170,8 +170,8 @@
                         :type="see?'text':'password'"
                         label="密码"
                         :rules="[ v => !!v || '密码不能为空']"
-                        background-color="var(--color-grey)"
-                        color="var(--color-semidark)"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
                         required
                         outlined
                       >
@@ -194,13 +194,70 @@
                       class="pb-4"
                       cols="12"
                     >
-                      <v-btn :loading="loading" :disabled="disabled" tabindex="4" block x-large color="var(--color-primary)" class="login-btn" @click="register">
+                      <v-btn :loading="loading" :disabled="disabled" tabindex="4" block x-large class="login-btn" @click="register">
                         注册
                       </v-btn>
                     </v-col>
                   </v-row>
                   <div class="login-font text-center pt-2 pb-4">
-                    已有账号?点击 <a class="a" @click.prevent="isRegister=false">登陆</a>
+                    已有账号?点击 <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Login">登陆</a>
+                  </div>
+                </v-container>
+                <v-container v-if="activeType === ACTIVE_TYPE.Forget" class="px-6 py-4 ">
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        v-model="forgetData.account"
+                        autocomplete="off"
+                        tabindex="1"
+                        label="账号"
+                        :rules="[ v => !!v || '账号不能为空']"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
+                        required
+                        outlined
+                      >
+                        <template slot="prepend-inner">
+                          <i class="cs cs-user" />
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        v-model="forgetData.email"
+                        autocomplete="off"
+                        tabindex="2"
+                        label="邮箱"
+                        :rules="[ v => !!v || '邮箱不能为空',
+                                  v => $tool.chkEmail(v) || '邮箱格式不正确']"
+                        background-color="#44a0b30f"
+                        color="#07d0e8"
+                        required
+                        outlined
+                      >
+                        <template slot="prepend-inner">
+                          <i class="cs cs-email" />
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col
+                      class="pb-4"
+                      cols="12"
+                    >
+                      <v-btn :loading="loading" :disabled="disabled" tabindex="4" block x-large class="login-btn" @click="forget">
+                        重置密码
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <div class="login-font text-center pt-2 pb-4">
+                    已有账号?点击 <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Login">登陆</a>
                   </div>
                 </v-container>
               </v-form>
@@ -214,11 +271,18 @@
 <script>
 import Oauth from '@/api/login/oauth'
 
+const ACTIVE_TYPE = {
+  Login: 'login',
+  Register: 'register',
+  Forget: 'forget'
+}
 export default {
   data: () => ({
+    ACTIVE_TYPE,
     valid: true,
     see: false,
-    isRegister: false,
+    title: '欢迎来到Jiopeel，请登录！',
+    activeType: ACTIVE_TYPE.Login,
     loading: false,
     disabled: false,
     loginData: {
@@ -229,6 +293,10 @@ export default {
       account: '',
       password: '',
       email: ''
+    },
+    forgetData: {
+      account: '',
+      email: ''
     }
   }),
   watch: {
@@ -238,7 +306,19 @@ export default {
     //   },
     //   deep: true// 对象内部的属性监听，也叫深度监听
     // }
-    isRegister(val, oldval) {
+    activeType(val, oldval) {
+      switch (val) {
+        default:
+        case ACTIVE_TYPE.Login:
+          this.title = '欢迎来到Jiopeel，请登录！'
+          break
+        case ACTIVE_TYPE.Register:
+          this.title = '注册账号！'
+          break
+        case ACTIVE_TYPE.Forget:
+          this.title = '忘记密码'
+          break
+      }
       return this.$refs.form.reset()
     }
   },
@@ -268,7 +348,7 @@ export default {
         console.log(auth)
         console.log('login :' + JSON.stringify(this.loginData))
         grantType = auth.grantType || 'local'
-        return Oauth.login(this.loginData, auth)
+        return Oauth.login({ ...auth, ...this.loginData })
       }).then(res => {
         console.log(res.data)
         return Oauth.authRedirect(grantType, res.data.code)
@@ -278,6 +358,9 @@ export default {
         console.log('access_token==> ' + JSON.stringify(access_token))
         this.$lockr.set('access_token', access_token)
         this.$toast.suc('登录成功')
+        setTimeout(() => {
+          this.$router.push({ name: 'main' })
+        }, 800)
       }).done().finally(() => {
         setTimeout(() => {
           this.loading = false
@@ -297,7 +380,30 @@ export default {
       const account = this.registerData.account
       Oauth.register(this.registerData).then(res => {
         this.$toast.suc('注册成功')
-        this.isRegister = false
+        this.activeType = ACTIVE_TYPE.Login
+        this.$nextTick(() => {
+          this.loginData.account = account
+        })
+      }).done().finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.disabled = false
+        }, 800)
+      })
+    },
+    /**
+     * 重置密码 重置为123456
+     */
+    forget() {
+      if (!this.check()) {
+        return
+      }
+      this.loading = true
+      this.disabled = true
+      const account = this.forgetData.account
+      Oauth.resetPassword(this.forgetData).then(res => {
+        this.$toast.suc(res.message || '密码重置为<B>123456</B>')
+        this.activeType = ACTIVE_TYPE.Login
         this.$nextTick(() => {
           this.loginData.account = account
         })

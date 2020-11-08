@@ -1,9 +1,10 @@
 // 登陆界面
+$color-primary : #006dc9;
+$color-grey : #44a0b30f;
+$color-dark : #44a0b380;
+$color-semidark : #07d0e8;
+
 .login-app {
-  --color-primary: #006dc9;
-  --color-grey: #44a0b30f;
-  --color-dark: #44a0b380;
-  --color-semidark: #07d0e8;
   .v-main {
     background-color: #f2f5f8;
     font-size: 14px;
@@ -43,19 +44,20 @@
   // }
 
   .v-label {
-    color: var(--color-semidark);
+    color: $color-semidark;
   }
   .v-text-field {
-    color: var(--color-semidark);
+    color: $color-semidark;
   }
   .v-input__slot {
     border-radius: 3px !important;
+    
   }
   .v-input__slot:before {
     border-color: transparent !important;
   }
   .v-input input {
-    color: var(--color-dark);
+    color: $color-dark;
   }
   .v-input__prepend-inner {
     padding-right: 10px !important;
@@ -63,17 +65,19 @@
   .login-title {
     justify-content: center;
     padding-top: 60px;
-    color: var(--color-semidark);
+    color: $color-semidark;
     font-size: 14px;
     font-weight: 700;
   }
   .login-btn {
     color: #fff;
-    box-shadow: 0 2px 7px var(--color-semidark);
+    box-shadow: 0 2px 7px $color-semidark;
     font-weight: 700;
+    background-color: $color-primary!important ;
     .v-btn__loader{
-      background-color: #006fc9a0!important ;
-      color: #fff!important ;
+      border-radius: 16px;
+      background-color:  inherit!important;
+      color: inherit!important ;
    }
   }
   .text-center {
@@ -86,16 +90,16 @@
     text-align: right;
   }
   .a {
-    color: var(--color-primary);
+    color: $color-primary;
     text-decoration: none;
-    border-bottom: 1px dashed var(--color-semidark);
+    border-bottom: 1px dashed $color-semidark;
     margin-top: -3px;
     padding-bottom: 2px;
     font-weight: 700;
   }
   .login-font {
     font-weight: 700;
-    color: var(--color-semidark);
+    color: $color-semidark;
   }
   .login-logo {
     overflow: hidden;
@@ -127,5 +131,5 @@
 }
 
 .v-text-field--outlined fieldset{
-  border: var(--color-grey) 1px solid;
+  border: $color-grey 1px solid;
 }

@@ -3,9 +3,9 @@ import Lockr from 'lockr'
 import Vue from 'vue'
 import router from './router/index.js' // 路由器
 import vuetify from './plugins/vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import './permission' // permission control
 import Tool from './utils/tool'
+import './permission' // permission control
+
 
 
 Vue.config.productionTip = false
