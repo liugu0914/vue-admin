@@ -16,7 +16,7 @@ router.beforeEach((to, from, next) => {
     return next('/')
   }
   // 放行不需要认证的路由
-  if (!to.matched.some(record => record.meta.requiresAuth || true)) {
+  if (!to.matched.some(record => record.meta.requiresAuth === false)) {
     return next()
   }
 
