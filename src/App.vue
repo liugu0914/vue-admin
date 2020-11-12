@@ -1,7 +1,5 @@
 <template>
-  <transition mode="out-in">
-    <router-view />
-  </transition>
+  <router-view />
 </template>
 
 <script>
