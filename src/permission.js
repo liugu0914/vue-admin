@@ -10,7 +10,7 @@ router.beforeEach((to, from, next) => {
   console.log('from : ')
   console.log(from)
   /** 全局路由触发这个方法  如果有缓存暂时在这里交与 */
-  const token = Lockr.get('access_token')
+  const token = Lockr.get('access_token') || '123'
   // 拥有token之后 不允许访问/login
   if (token && Utils.contains('/login', to.path)) {
     return next('/')
