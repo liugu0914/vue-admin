@@ -1,9 +1,8 @@
-
 // 登陆界面
-$color-primary : #006dc9;
-$color-grey : #44a0b30f;
-$color-dark : #44a0b380;
-$color-semidark : #07d0e8;
+$color-primary: #006dc9;
+$color-grey: #44a0b30f;
+$color-dark: #44a0b380;
+$color-semidark: #07d0e8;
 
 .login-app {
   height: 100vh;
@@ -16,13 +15,13 @@ $color-semidark : #07d0e8;
   //   display: flex;
   //   align-items: center;
   // }
-  .primary{
+  .primary {
     color: $color-semidark;
   }
-  .grey{
+  .grey {
     color: $color-grey;
   }
-  .width-100{
+  .width-100 {
     width: 100%;
   }
   .login-container {
@@ -34,7 +33,7 @@ $color-semidark : #07d0e8;
   }
   .login-main {
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08) !important;
-    border-radius: .5em;
+    border-radius: 0.5em;
     // &::after{
     //   content: ' ';
     //   box-shadow: 0 0 25px rgba(0, 0, 0, .1);
@@ -60,23 +59,22 @@ $color-semidark : #07d0e8;
   //   background-color: #fff;
   //   z-index: 1;
   // }
-  .input,input{
+  .input,
+  input {
     border-color: $color-grey;
-    background:$color-grey! important;
-    color: $color-semidark;
+    background: $color-grey !important;
+    color: $color-dark;
     padding-top: 10px;
     padding-bottom: 10px;
     height: 50px;
-    font-weight: 600;
-    font-size: 16px;
   }
-  input::-webkit-input-placeholder{
-    color:$color-dark;
+  input::-webkit-input-placeholder {
+    color: $color-dark;
   }
-  .ant-input-affix-wrapper .ant-input:not(:last-child){
+  .ant-input-affix-wrapper .ant-input:not(:last-child) {
     padding-right: 40px;
   }
-  .ant-input-affix-wrapper .ant-input:not(:first-child){
+  .ant-input-affix-wrapper .ant-input:not(:first-child) {
     padding-left: 40px;
   }
 
@@ -107,12 +105,12 @@ $color-semidark : #07d0e8;
     color: #fff;
     box-shadow: 0 2px 7px $color-semidark;
     font-weight: 700;
-    background-color: $color-primary!important ;
-    .v-btn__loader{
+    background-color: $color-primary !important ;
+    .v-btn__loader {
       border-radius: inherit;
-      background-color: $color-primary!important;
-      color: #fff!important ;
-   }
+      background-color: $color-primary !important;
+      color: #fff !important ;
+    }
   }
   .text-center {
     text-align: center;
@@ -164,6 +162,6 @@ $color-semidark : #07d0e8;
   min-width: 200px;
 }
 
-.v-text-field--outlined fieldset{
+.v-text-field--outlined fieldset {
   border: $color-grey 1px solid;
 }

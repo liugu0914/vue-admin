@@ -10,7 +10,7 @@
             <div class="login-title">
               {{ title }}
             </div>
-            <div v-if="activeType === ACTIVE_TYPE.Login" class="px-2 py-3">
+            <div v-if="activeType === ACTIVE_TYPE.Login" class="pt-4 pb-2">
               <a-row :gutter="[0 ,16]">
                 <a-form-model ref="loginForm" :model="loginData" :rules="loginRules">
                   <a-col :span="24">
@@ -59,7 +59,7 @@
                   </a-button>
                 </a-col>
               </a-row>
-              <a-row :gutter="[0,24]">
+              <a-row :gutter="[0,24]" class="py-3">
                 <a-col
                   :span="12" class="text-left login-font"
                 >
@@ -71,7 +71,7 @@
                   <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Forget">忘记密码</a>
                 </a-col>
               </a-row>
-              <a-row :gutter="[0,16]">
+              <a-row :gutter="[0,16]" class="py-2">
                 <div class="login-font text-center pb-2">
                   第三方登录
                 </div>
@@ -97,145 +97,112 @@
                 </a-col>
               </a-row>
             </div>
-            <div v-if="activeType === ACTIVE_TYPE.Register" class="px-6 py-4 ">
-              <a-row>
-                <a-col
-                  cols="12"
-                >
-                  <a-input
-                    v-model="registerData.account"
-                    autocomplete="off"
-                    tabindex="1"
-                    label="账号"
-                    :rules="[ v => !!v || '账号不能为空']"
-                    background-color="#44a0b30f"
-                    color="#07d0e8"
-                    required
-                    outlined
-                  >
-                    <template slot="prepend-inner">
-                      <i class="cs cs-user" />
-                    </template>
-                  </a-input>
-                </a-col>
-
-                <a-col
-                  cols="12"
-                >
-                  <a-input
-                    v-model="registerData.email"
-                    autocomplete="off"
-                    tabindex="2"
-                    label="邮箱"
-                    :rules="[ v => !!v || '邮箱不能为空',
-                              v => $tool.chkEmail(v) || '邮箱格式不正确']"
-                    background-color="#44a0b30f"
-                    color="#07d0e8"
-                    required
-                    outlined
-                  >
-                    <template slot="prepend-inner">
-                      <i class="cs cs-email" />
-                    </template>
-                  </a-input>
-                </a-col>
-                <a-col
-                  cols="12"
-                >
-                  <a-input
-                    v-model="registerData.password"
-                    autocomplete="off"
-                    tabindex="3"
-                    :type="see?'text':'password'"
-                    label="密码"
-                    :rules="[ v => !!v || '密码不能为空']"
-                    background-color="#44a0b30f"
-                    color="#07d0e8"
-                    required
-                    outlined
-                  >
-                    <template slot="prepend-inner">
-                      <i class="cs cs-password" />
-                    </template>
-                    <template slot="append">
-                      <a-tooltip bottom color="#000">
-                        <template v-slot:activator="{ on, attrs }">
-                          <i v-bind="attrs" :class="see?'cs-see':'cs-nosee'" class="cs is-see" v-on="on" @click="isSee" />
+            <div v-if="activeType === ACTIVE_TYPE.Register" class="pt-4 pb-2">
+              <a-row :gutter="[0 ,16]">
+                <a-form-model ref="registerForm" :model="registerData" :rules="registerRules">
+                  <a-col :span="24">
+                    <a-form-model-item prop="account">
+                      <a-input
+                        v-model="registerData.account"
+                        autocomplete="off"
+                        tabindex="1"
+                        placeholder="账号"
+                      >
+                        <template slot="prefix">
+                          <i class="cs cs-user primary" />
                         </template>
-                        <span>{{ see?'密码可见':'密码不可见' }}</span>
-                      </a-tooltip>
-                    </template>
-                  </a-input>
-                </a-col>
+                      </a-input>
+                    </a-form-model-item>
+                  </a-col>
+                  <a-col :span="24">
+                    <a-form-model-item prop="email">
+                      <a-input
+                        v-model="registerData.email"
+                        autocomplete="off"
+                        tabindex="2"
+                        placeholder="邮箱"
+                      >
+                        <template slot="prefix">
+                          <i class="cs cs-email primary" />
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </a-col>
+                  <a-col :span="24">
+                    <a-form-model-item prop="password">
+                      <a-input
+                        v-model="registerData.password"
+                        autocomplete="off"
+                        tabindex="3"
+                        :type="see?'text':'password'"
+                        placeholder="密码"
+                      >
+                        <template slot="prefix">
+                          <i class="cs cs-password primary" />
+                        </template>
+                        <template slot="suffix">
+                          <a-tooltip bottom color="#000" :title="see?'密码可见':'密码不可见'">
+                            <i :class="see?'cs-see':'cs-nosee'" class="cs is-see primary" @click="isSee" />
+                          </a-tooltip>
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </a-col>
+                </a-form-model>
               </a-row>
               <a-row>
-                <a-col
-                  class="pb-4"
-                  cols="12"
-                >
+                <a-col class="pb-4" :span="24">
                   <a-button :loading="loading" :disabled="disabled" tabindex="4" block x-large class="login-btn" @click="register">
                     注册
                   </a-button>
                 </a-col>
               </a-row>
-              <div class="login-font text-center pt-2 pb-4">
+              <div class="login-font text-center py-2">
                 已有账号?点击 <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Login">登陆</a>
               </div>
             </div>
-            <div v-if="activeType === ACTIVE_TYPE.Forget" class="px-6 py-4 ">
-              <a-row>
-                <a-col
-                  cols="12"
-                >
-                  <a-input
-                    v-model="forgetData.account"
-                    autocomplete="off"
-                    tabindex="1"
-                    label="账号"
-                    :rules="[ v => !!v || '账号不能为空']"
-                    background-color="#44a0b30f"
-                    color="#07d0e8"
-                    required
-                    outlined
-                  >
-                    <template slot="prepend-inner">
-                      <i class="cs cs-user" />
-                    </template>
-                  </a-input>
-                </a-col>
+            <div v-if="activeType === ACTIVE_TYPE.Forget" class="pt-4 pb-2">
+              <a-row :gutter="[0 ,16]">
+                <a-form-model ref="forgetForm" :model="forgetData" :rules="forgetRules">
+                  <a-col :span="24">
+                    <a-form-model-item prop="account">
+                      <a-input
+                        v-model="forgetData.account"
+                        autocomplete="off"
+                        tabindex="1"
+                        placeholder="账号"
+                      >
+                        <template slot="prefix">
+                          <i class="cs cs-user primary" />
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </a-col>
 
-                <a-col
-                  cols="12"
-                >
-                  <a-input
-                    v-model="forgetData.email"
-                    autocomplete="off"
-                    tabindex="2"
-                    label="邮箱"
-                    :rules="[ v => !!v || '邮箱不能为空',
-                              v => $tool.chkEmail(v) || '邮箱格式不正确']"
-                    background-color="#44a0b30f"
-                    color="#07d0e8"
-                    required
-                    outlined
-                  >
-                    <template slot="prepend-inner">
-                      <i class="cs cs-email" />
-                    </template>
-                  </a-input>
-                </a-col>
+                  <a-col :span="24">
+                    <a-form-model-item prop="email">
+                      <a-input
+                        v-model="forgetData.email"
+                        autocomplete="off"
+                        tabindex="2"
+                        placeholder="邮箱"
+                      >
+                        <template slot="prefix">
+                          <i class="cs cs-email primary" />
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </a-col>
+                </a-form-model>
               </a-row>
               <a-row>
-                <a-col
-                  class="pb-4"
-                  cols="12"
-                >
+                <a-col :span="24" class="pb-4">
                   <a-button :loading="loading" :disabled="disabled" tabindex="4" block x-large class="login-btn" @click="forget">
                     重置密码
                   </a-button>
                 </a-col>
               </a-row>
-              <div class="login-font text-center pt-2 pb-4">
+              <div class="login-font text-center py-2">
                 已有账号?点击 <a class="a" @click.prevent="activeType = ACTIVE_TYPE.Login">登陆</a>
               </div>
             </div>
@@ -303,12 +270,6 @@ export default {
     }
   },
   watch: {
-    // loginData: {
-    //   handler: function(val, oldval) {
-    //     console.log('watch :' + JSON.stringify(this.loginData))
-    //   },
-    //   deep: true// 对象内部的属性监听，也叫深度监听
-    // }
     activeType(val, oldval) {
       switch (val) {
         default:
