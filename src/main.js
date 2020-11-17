@@ -1,3 +1,6 @@
+/**
+ *  为 ant 版本
+ */
 import App from './App.vue'
 import Lockr from 'lockr'
 import Vue from 'vue'
