@@ -1,11 +1,9 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        {{ message }}
-      </v-container>
-    </v-main>
-  </v-app>
+  <div>
+    <a-layout>
+      <a-layout-content>{{ message }}</a-layout-content>
+    </a-layout>
+  </div>
 </template>
 
 <script>
@@ -29,12 +27,12 @@ export default {
       this.message = '授权认证成功,正在跳转...'
       setTimeout(() => {
         this.$router.push({ name: 'main' })
-      }, 800)
+      }, 100)
     }).catch(res => {
       this.message = '授权认证失败,正在返回登录界面...'
       setTimeout(() => {
         this.$router.push({ name: 'login' })
-      }, 800)
+      }, 500)
     }).done()
   }
 }

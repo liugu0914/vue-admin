@@ -293,89 +293,84 @@ export default {
     isSee() {
       this.see = !this.see
     },
-    check() {
-      return this.$refs.form.validate()
-    },
     /**
      * 登录
      */
     login() {
-      if (!this.check()) {
-        return
-      }
-      this.loading = true
-      this.disabled = true
-      // 开始登录操作
-      let grantType = ''
-      Oauth.getAuthUrl().then(res => {
-        const auth = res.data
-        console.log(auth)
-        console.log('login :' + JSON.stringify(this.loginData))
-        grantType = auth.grantType || 'local'
-        return Oauth.login({ ...auth, ...this.loginData })
-      }).then(res => {
-        console.log(res.data)
-        return Oauth.authRedirect(grantType, res.data.code)
-      }).then(res => {
-        console.log('认证成功：' + JSON.stringify(res))
-        const access_token = res.data.access_token
-        console.log('access_token==> ' + JSON.stringify(access_token))
-        this.$lockr.set('access_token', access_token)
-        this.$toast.suc('登录成功')
-        setTimeout(() => {
-          this.$router.push({ name: 'main' })
-        }, 800)
-      }).done().finally(() => {
-        setTimeout(() => {
-          this.loading = false
-          this.disabled = false
-        }, 800)
+      this.$refs.loginForm.validate(valid => {
+        if (!valid) { return } // 验证失败
+        this.loading = true
+        this.disabled = true
+        // 开始登录操作
+        let grantType = ''
+        Oauth.getAuthUrl().then(res => {
+          const auth = res.data
+          console.log(auth)
+          console.log('login :' + JSON.stringify(this.loginData))
+          grantType = auth.grantType || 'local'
+          return Oauth.login({ ...auth, ...this.loginData })
+        }).then(res => {
+          console.log(res.data)
+          return Oauth.authRedirect(grantType, res.data.code)
+        }).then(res => {
+          console.log('认证成功：' + JSON.stringify(res))
+          const access_token = res.data.access_token
+          console.log('access_token==> ' + JSON.stringify(access_token))
+          this.$lockr.set('access_token', access_token)
+          this.$message.success('登录成功')
+          setTimeout(() => {
+            this.$router.push({ name: 'main' })
+          }, 800)
+        }).done().finally(() => {
+          setTimeout(() => {
+            this.loading = false
+            this.disabled = false
+          }, 800)
+        })
       })
     },
     /**
      * 注册
      */
     register() {
-      if (!this.check()) {
-        return
-      }
-      this.loading = true
-      this.disabled = true
-      const account = this.registerData.account
-      Oauth.register(this.registerData).then(res => {
-        this.$toast.suc('注册成功')
-        this.activeType = ACTIVE_TYPE.Login
-        this.$nextTick(() => {
-          this.loginData.account = account
+      this.$refs.registerForm.validate(valid => {
+        this.loading = true
+        this.disabled = true
+        const account = this.registerData.account
+        Oauth.register(this.registerData).then(res => {
+          this.$message.success('注册成功')
+          this.activeType = ACTIVE_TYPE.Login
+          this.$nextTick(() => {
+            this.loginData.account = account
+          })
+        }).done().finally(() => {
+          setTimeout(() => {
+            this.loading = false
+            this.disabled = false
+          }, 800)
         })
-      }).done().finally(() => {
-        setTimeout(() => {
-          this.loading = false
-          this.disabled = false
-        }, 800)
       })
     },
     /**
      * 重置密码 重置为123456
      */
     forget() {
-      if (!this.check()) {
-        return
-      }
-      this.loading = true
-      this.disabled = true
-      const account = this.forgetData.account
-      Oauth.resetPassword(this.forgetData).then(res => {
-        this.$toast.suc(res.message || '密码重置为<B>123456</B>')
-        this.activeType = ACTIVE_TYPE.Login
-        this.$nextTick(() => {
-          this.loginData.account = account
+      this.$refs.forgetForm.validate(valid => {
+        this.loading = true
+        this.disabled = true
+        const account = this.forgetData.account
+        Oauth.resetPassword(this.forgetData).then(res => {
+          this.$message.success(res.message || '密码重置为<B>123456</B>')
+          this.activeType = ACTIVE_TYPE.Login
+          this.$nextTick(() => {
+            this.loginData.account = account
+          })
+        }).done().finally(() => {
+          setTimeout(() => {
+            this.loading = false
+            this.disabled = false
+          }, 800)
         })
-      }).done().finally(() => {
-        setTimeout(() => {
-          this.loading = false
-          this.disabled = false
-        }, 800)
       })
     },
     /**

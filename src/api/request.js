@@ -1,13 +1,18 @@
 
 import axios from 'axios'
-import Vue from 'vue'
+import { message } from 'ant-design-vue'
 import Lockr from 'lockr'
 import router from '@/router/index.js'
 import qs from 'qs'
 import '@/utils/promise'
 
 // 消息提示
-const Toast = Vue.prototype.$toast
+const Msg = message
+Msg.config({
+  top: `40px`,
+  duration: 2, // 2s 消失
+  maxCount: 3 // 最大3个
+})
 /**
  * 请求类型
  */
@@ -66,7 +71,7 @@ request.interceptors.response.use(
         return Promise.resolve(res)
       } else {
         const message = res.message || DefaultMsg
-        Toast.err(message)
+        Msg.error(message)
         return Promise.reject(message)
       }
     } else {
@@ -74,7 +79,7 @@ request.interceptors.response.use(
     }
   }, (error) => {
     let msg = '操作失败'
-    let state = 'err' // 提示框状态
+    let state = 'error' // 提示框状态
     if (error.response) {
       const response = error.response
       if (response.data && response.data.message) {
@@ -89,11 +94,11 @@ request.interceptors.response.use(
         router.push('/login')
       }
     }
-    Toast[state](msg)
+    Msg[state](msg)
     return Promise.reject(msg)
   }
 )
 
-export { ContentType, Toast }
+export { ContentType, Msg }
 
 export default request
