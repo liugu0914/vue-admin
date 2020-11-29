@@ -9,6 +9,7 @@ $color-semidark: #07d0e8;
   display: flex;
   justify-content: center;
   background-color: #f2f5f8;
+
   // .v-main {
   //   background-color: #f2f5f8;
   //   font-size: 14px;
@@ -18,12 +19,15 @@ $color-semidark: #07d0e8;
   .primary {
     color: $color-semidark;
   }
+
   .grey {
     color: $color-grey;
   }
+
   .width-100 {
     width: 100%;
   }
+
   .login-container {
     max-width: 400px;
     width: 100%;
@@ -31,6 +35,7 @@ $color-semidark: #07d0e8;
     align-items: center;
     justify-content: center;
   }
+
   .login-main {
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08) !important;
     border-radius: 0.5em;
@@ -48,6 +53,7 @@ $color-semidark: #07d0e8;
     //   z-index: 1;
     // }
   }
+
   // .login-main-monitor{
   //   box-shadow: 0 0 25px rgba(0, 0, 0, 0.1)!important;;
   //   transform: translate(0, -92.6%) scale(0.88)!important;;
@@ -68,12 +74,15 @@ $color-semidark: #07d0e8;
     padding-bottom: 10px;
     height: 50px;
   }
+
   input::-webkit-input-placeholder {
     color: $color-dark;
   }
+
   .ant-input-affix-wrapper .ant-input:not(:last-child) {
     padding-right: 40px;
   }
+
   .ant-input-affix-wrapper .ant-input:not(:first-child) {
     padding-left: 40px;
   }
@@ -82,18 +91,23 @@ $color-semidark: #07d0e8;
     height: 50px;
     font-size: 16px;
   }
+
   .v-label {
     color: $color-semidark;
   }
+
   .v-text-field {
     color: $color-semidark;
   }
+
   .v-input input {
     color: $color-dark;
   }
+
   .v-input__prepend-inner {
     padding-right: 10px !important;
   }
+
   .login-title {
     text-align: center;
     padding-top: 60px;
@@ -101,26 +115,33 @@ $color-semidark: #07d0e8;
     font-size: 14px;
     font-weight: 700;
   }
+
   .login-btn {
     color: #fff;
     box-shadow: 0 2px 7px $color-semidark;
     font-weight: 700;
-    background-color: $color-primary !important ;
+    background-color: $color-primary !important;
+    border: none;
+
     .v-btn__loader {
       border-radius: inherit;
       background-color: $color-primary !important;
-      color: #fff !important ;
+      color: #fff !important;
     }
   }
+
   .text-center {
     text-align: center;
   }
+
   .text-left {
     text-align: left;
   }
+
   .text-right {
     text-align: right;
   }
+
   .a {
     color: $color-primary;
     text-decoration: none;
@@ -129,10 +150,12 @@ $color-semidark: #07d0e8;
     padding-bottom: 2px;
     font-weight: 700;
   }
+
   .login-font {
     font-weight: 700;
     color: $color-semidark;
   }
+
   .login-logo {
     overflow: hidden;
     width: 100px;
@@ -145,17 +168,21 @@ $color-semidark: #07d0e8;
     z-index: 3;
     position: relative;
   }
+
   .cs {
     font-size: 20px;
   }
+
   .is-see {
     font-size: 25px;
   }
+
   .cs-svg {
     width: 30px;
     height: 30px;
   }
 }
+
 .toast-content {
   word-wrap: break-word;
   max-width: 320px;

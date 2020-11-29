@@ -334,6 +334,7 @@ export default {
      */
     register() {
       this.$refs.registerForm.validate(valid => {
+        if (!valid) { return } // 验证失败
         this.loading = true
         this.disabled = true
         const account = this.registerData.account
@@ -356,11 +357,12 @@ export default {
      */
     forget() {
       this.$refs.forgetForm.validate(valid => {
+        if (!valid) { return } // 验证失败
         this.loading = true
         this.disabled = true
         const account = this.forgetData.account
         Oauth.resetPassword(this.forgetData).then(res => {
-          this.$message.success(res.message || '密码重置为<B>123456</B>')
+          this.$message.success(res.message)
           this.activeType = ACTIVE_TYPE.Login
           this.$nextTick(() => {
             this.loginData.account = account
